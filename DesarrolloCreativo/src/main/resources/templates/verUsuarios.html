@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista de Usuarios - Ciclo3</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <style>
+    a{
+    color:black;
+    }
+    a:hover {
+    color: withe;
+    text-decoration:none;
+    }
+</style>
+<body>
+<body style="background-color:LightCyan;"></body>
+</body>
+<body>
+
+<div class="container">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/VerEmpresas">Empresas</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/Users">Empleados</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/Movements">Movimientos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/logout}">Cerrar Cesión</a>
+    </li>
+    <p th:inline="text" class="fw-bold" style="float: right;"  >User: [[${#httpServletRequest.remoteUser}]]</p>
+  </ul>
+</div>
+
+<div class="container">
+  <th><button type="button" style="float: right;" class="btn btn-info"><a th:href="@{/AgregarUsuario}" >Agregar Empleado</a></button></h1></th>
+  <br>
+  <h1> Lista de Usuarios</h1>
+  <!--Dibujamos la tabla-->
+  <br><table class="table table-striped table-hover">
+  <tr>
+    <th class="text-center">ID</th>
+    <th class="text-center">Nombre</th>
+    <th class="text-center">Correo</th>
+    <th class="text-center">Empresa</th>
+    <th class="text-center">Rol</th>
+    <th class="text-center">Estado</th>
+    <th class="text-center">Movimientos</th>
+    <th class="text-center">Editar</th>
+    <th class="text-center">Eliminar</th>
+  </tr>
+
+  <!--Llenamos la tabla dibujada-->
+  <!--En nuestro controller, creamos en viewUsuarios un modelo con un atributo llamado usulist donde esta guardada la lista de todos los empleados-->
+  <tr th:each="usuario : ${usulist}">
+    <td class="text-center" th:text="${usuario.ID}"></td>
+    <td class="text-center" th:text="${usuario.nombre}"></td>
+    <td class="text-center" th:text="${usuario.correo}"></td>
+    <td class="text-center" th:text="${usuario.empresa.nombre}"></td>
+    <td class="text-center" th:if="${usuario.rol=='ROLE_ADMIN'}">Administrativo</td>
+    <td class="text-center" th:if="${usuario.rol=='ROLE_USER'}">Operativo</td>
+    <td class="text-center" th:if="${usuario.estado==true}">Activo</td>
+    <td class="text-center" th:if="${usuario.estado==false}">Inactivo</td>
+    <td class="text-center"><button type="button" class="btn btn-info"><a th:href="@{/User/{id}/Movements(id=${usuario.ID})}">Ver</a></button></td>
+    <td class="text-center"><button type="button" class="btn btn-warning"><a th:href="@{/EditarUsuario/{id}(id=${usuario.ID})}">Editar</a></button></td>
+    <td class="text-center"><button type="button" class="btn btn-danger"><a th:href="@{/EliminarUsuario/{id}(id=${usuario.ID})}">Eliminar</a></button></td>
+  </tr>
+</table>
+
+  <!-- vamos a crear un boton que sirva para agregar nuevos usuarios -->
+  <th><a href="javascript: history.go(-1)" style="float: right;" class="btn btn-info" role="button">Atrás</a></th>
+</div>
+
+<script th:inline="javascript">
+    window.onload=function(){
+
+        var msg= [[${mensaje}]];
+        if (msg == "saveOK"){
+            Command : toastr["success"]("Usuario registrado con éxito!")
+            }
+        else if (msg == "updateOK"){
+            Command : toastr["success"]("Usuario actualizado con éxito!")
+        }
+        else if (msg == "deleteOK"){
+            Command : toastr["error"]("Registro de usuario eliminado con éxito!")
+        }
+        else if (msg == "deleteError"){
+            Command : toastr["error"]("Registro de usuario no ha sido eliminado!")
+        }
+        toastr.options={
+            "positionClass": "toast-top-right",
+            "showDuration":"300",
+            "showMethod":"fadeIn",
+            "hideMethod":"fadeOut",
+        }
+
+
+    }
+
+</script>
+
+</body>
+</html>

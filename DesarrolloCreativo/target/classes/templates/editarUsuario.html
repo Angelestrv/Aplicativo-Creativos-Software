@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Editar Usuario - Ciclo3</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    a{
+    color:black;
+    }
+    a:hover {
+    color: withe;
+    text-decoration:none;
+    }
+</style>
+<body>
+<body style="background-color:LightCyan;"></body>
+</body>
+<body>
+
+<div class="container">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/VerEmpresas">Empresas</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/Users">Empleados</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/Movements">Movimientos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/logout}">Cerrar Cesión</a>
+    </li>
+    <p th:inline="text" class="fw-bold" style="float: right;"  >User: [[${#httpServletRequest.remoteUser}]]</p>
+  </ul>
+</div>
+
+<div class="container">
+
+  <h1> Actualice aqui los datos del Usuario</h1>
+  <br>
+  <!--Crear formulario para llenar los datos de la empresa y guardarlo en el objeto emp -->
+  <form th:action="@{/ActualizarUsuario}" th:object="${usu}" method="post">
+
+    <!--Campo para id-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="ID">ID del Usuario:</label>
+        <div class="col-md-6">
+          <input type="text" th:field="*{ID}" class="form-control" ID="ID" required="required" readonly></div>
+      </div>
+    </div>
+
+
+    <!--Campo para nombre-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="nombre">Nombre del Usuario:</label>
+        <div class="col-md-6">
+          <input type="text" th:field="*{nombre}" class="form-control" ID="nombre" required="required"></div>
+      </div>
+    </div>
+
+    <!--Campo para correo-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="correo">Correo del usuario:</label>
+        <div class="col-md-6">
+          <input type="email" th:field="*{correo}" class="form-control" ID="correo" required="required"></div>
+      </div>
+    </div>
+
+    <!--Campo para empresa-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="empresa">Empresa a la que pertence:</label>
+        <div class="col-md-6">
+          <select th:field="*{empresa}" class="form-control" ID="empresa" required="required">
+            <option th:each="empresa : ${emprelist}" th:text="${empresa.nombre}" th:value="${empresa.ID}"></option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!--Campo para Rol-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="rol">Rol del usuario:</label>
+        <div class="col-md-6">
+          <select th:field="*{rol}" class="form-control" ID="rol" required="required">
+            <option th:value="ROLE_ADMIN">Administrativo</option>
+            <option th:value="ROLE_USER">Operativo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!--Campo para contraseña-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="password">Contraseña del usuario:</label>
+        <div class="col-md-6">
+          <input type="text" th:field="*{password}" class="form-control" ID="password"></div>
+      </div>
+    </div>
+
+    <!--Campo para Estado-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="estado">Estado actual del usuario:</label>
+        <div class="col-md-6">
+          <select th:field="*{estado}" class="form-control" ID="estado" required="required">
+            <option th:value=1>Activo</option>
+            <option th:value=0>Inactivo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+    <!--Boton para enviar todo y ejecutar accion -->
+    <div class="row">
+      <div class="col-md-2">
+        <button class="btn btn-success">Actualizar usuario</button>
+      </div>
+    </div>
+
+  </form>
+
+  <br>
+  <a href="javascript: history.go(-1)" class="btn btn-info" role="button">Atrás</a>
+
+</div><!--script para ocultar la contraseña-->
+<script th:inline="javascript">
+  window.onload=function(){
+  document.getElementById("password").type="password"}
+</script>
+</body>
+</html>

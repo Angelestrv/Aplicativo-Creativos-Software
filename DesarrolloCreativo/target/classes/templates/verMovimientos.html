@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head>
+    <title>Lista de Movimientos - Ciclo3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <style>
+    a{
+    color:black;
+    }
+    a:hover {
+    color: withe;
+    text-decoration:none;
+    }
+</style>
+<body>
+<body style="background-color:LightCyan;"></body>
+</body>
+<body>
+
+<div class="container">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/VerEmpresas">Empresas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/Users">Empleados</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/Movements">Movimientos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/logout}">Cerrar Cesión</a>
+        </li>
+        <p th:inline="text" class="fw-bold" style="float: right;"  >User: [[${#httpServletRequest.remoteUser}]]</p>
+    </ul>
+</div>
+
+<div class="container">
+    <th><button style="float: right;" type="button" class="btn btn-info"><a th:href="@{/AgregarMovimiento}" >Agregar Movimiento</a></button></th>
+    <h1> Lista de Movimientos</h1>
+    <!--Dibujamos la tabla-->
+    <br><table class="table table-striped table-hover">
+    <tr>
+        <th class="text-center">ID</th>
+        <th class="text-center">Valor</th>
+        <th class="text-center"> Concepto</th>
+        <th class="text-center">Usuario Responsable</th>
+        <th class="text-center">Fecha del Movimiento</th>
+        <th class="text-center">Editar</th>
+        <th class="text-center">Eliminar</th>
+    </tr>
+
+        <!--Llenamos la tabla dibujada-->
+        <!--En nustro controller, creamos en viewMovimientos un modelo con un atributo llamado movlist donde esta guardada la lista de todos los movimientos -->
+        <tr th:each="movimiento : ${movlist}"> <!--Cada objeto que encuentre en emplelist es un empleado-->
+            <td class="text-center" th:text="${movimiento.ID}"></td>
+            <td class="text-center" th:text="${#numbers.formatCurrency(movimiento.monto)}"></td>
+            <td class="text-center" th:if="${movimiento.concepto=='1'}">Caja menor</td>
+            <td class="text-center" th:if="${movimiento.concepto=='2'}">Maquinaria y Equipo</td>
+            <td class="text-center" th:if="${movimiento.concepto=='3'}">Mobiliario</td>
+            <td class="text-center" th:if="${movimiento.concepto=='4'}">Nomina</td>
+            <td class="text-center" th:if="${movimiento.concepto=='5'}">Operativos</td>
+            <td class="text-center" th:if="${movimiento.concepto=='6'}">Papelería</td>
+            <td class="text-center" th:if="${movimiento.concepto=='7'}">Servicios Publicos/Privados</td>
+            <td class="text-center" th:if="${movimiento.concepto=='8'}">Tributario</td>
+            <td class="text-center" th:text="${movimiento.usuario.nombre}"></td>
+            <td class="text-center" th:text="${#dates.format(movimiento.fecha, 'dd/MM/yyyy')}"></td>
+            <td class="text-center"><button type="button" class="btn btn-warning"><a th:href="@{/EditarMovimiento/{ID}(ID=${movimiento.ID})}">Editar</a></button></td>
+            <td class="text-center"><button type="button" class="btn btn-danger"><a th:href="@{/EliminarMovement/{ID}(ID=${movimiento.ID})}">Eliminar</a></button></td>
+        </tr>
+    </table>
+
+    <!-- CAMPO PARA EL AREA DE NAVEGACIÓN -->
+
+    <nav aria-label="Ejemplo navegacion">
+        <ul class="pagination mt-4">
+            <li th:class="${paginaActual==estado.index} ? 'active' : '' " th:each="pagina, estado: ${paginas}" class="page-item">
+                <a th:href="@{/Movements/(pagina=${estado.index})}" class="page-link" th:text="${estado.index}+1"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Campo para la suma de TODOS los MOVIMIENTOS FILTRADOS -->
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label class="col-md-3" for="SumaMontos">Total Movimientos:</label>
+            <div class="col-md-6">
+                <p th:text="${#numbers.formatCurrency(SumaMontos)}" class="form-control" ID="SumaMontos"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Vamos a crear un boton que sirva para agregar nuevos movimientos -->
+
+    <th><a href="javascript: history.go(-1)" style="float: right;" class="btn btn-info" role="button">Atrás</a></th>
+
+
+</div>
+
+<script th:inline="javascript">
+        window.onload=function(){
+
+        var msg= [[${mensaje}]];
+        if (msg == "saveOK"){
+            Command : toastr["success"]("Movimiento registrado con éxito!")
+            }
+        else if (msg == "updateOK"){
+            Command : toastr["success"]("Movimiento actualizado con éxito!")
+        }
+        else if (msg == "deleteOK"){
+            Command : toastr["error"]("Movimiento eliminado con éxito!")
+        }
+        else if (msg == "deleteError"){
+            Command : toastr["error"]("Movimiento no ha sido eliminado!")
+        }
+        toastr.options={
+            "positionClass": "toast-top-right",
+            "showDuration":"300",
+            "showMethod":"fadeIn",
+            "hideMethod":"fadeOut",
+        }
+    }
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th = "http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Movimiento - Ciclo3</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    a{
+    color:black;
+    }
+    a:hover {
+    color: withe;
+    text-decoration:none;
+    }
+</style>
+<body>
+<body style="background-color:LightCyan;"></body>
+</body>
+<body>
+
+<div class="container">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/VerEmpresas">Empresas</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/Users">Empleados</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/Movements">Movimientos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/logout}">Cerrar Cesión</a>
+    </li>
+    <p th:inline="text" class="fw-bold" style="float: right;"  >User: [[${#httpServletRequest.remoteUser}]]</p>
+  </ul>
+</div>
+
+<div class="container">
+
+  <h1> Modifique aquí los datos del Movimiento</h1>
+  <br>
+  <!--Crear formulario para cambiar los datos del movimiento y guardarlo en el objeto mov -->
+  <form th:action="@{/ActualizarMovimiento}" th:object="${mov}" method="post">
+
+    <!--Campo para ID-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="ID">ID del movimiento:</label>
+        <div class="col-md-6">
+          <input type="text" th:field="*{ID}" class="form-control" ID="ID" required="required" readonly></div>
+      </div>
+    </div>
+
+    <!--Campo para concepto-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="concepto">Concepto del Movimiento:</label>
+        <div class="col-md-6">
+          <select th:field="*{concepto}" class="form-control" ID="concepto" required="required">
+            <option th:value=1>Caja menor</option>
+            <option th:value=2>Maquinaria y Equipo</option>
+            <option th:value=3>Mobiliario</option>
+            <option th:value=4>Nomina</option>
+            <option th:value=5>Operativos</option>
+            <option th:value=6>Papelería</option>
+            <option th:value=7>Servicios Publicos/Privados</option>
+            <option th:value=8>Tributario</option>
+
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!--Campo para Monto-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="monto">Valor del movimiento:</label>
+        <div class="col-md-6">
+          <input type="number" th:field="*{monto}" class="form-control" ID="monto" required="required"></div>
+      </div>
+    </div>
+
+    <!--Campo para empleado (Usuario responsable)-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="usuario">Usuario responsable:</label>
+        <div class="col-md-6">
+          <select th:field="*{usuario}" class="form-control" ID="usuario" required="required">
+            <option th:value=*{usuario.ID} th:text=*{usuario.correo}></option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!--Campo para fecha-->
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-3" for="fecha">Fecha del movimiento:</label>
+        <div class="col-md-6">
+          <input type="date" th:field="*{fecha}" class="form-control" ID="fecha" required="required" readonly></div>
+      </div>
+    </div>
+
+    <!--Boton para enviartodo y ejecutar accion -->
+    <div class="row">
+      <div class="col-md-2">
+        <button class="btn btn-success">Actualizar Movimiento</button>
+      </div>
+    </div>
+
+  </form>
+
+  <br>
+  <a href="javascript: history.go(-1)" class="btn btn-info" role="button">Atrás</a>
+
+</div>
+
+</body>
+</html>
