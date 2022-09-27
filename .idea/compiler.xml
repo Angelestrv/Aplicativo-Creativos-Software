@@ -7,14 +7,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DesarrolloCreativo" />
+        <module name="Aplicativo-Creativos-Software" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Aplicativo-Creativos-Software" target="18" />
       <module name="DesarrolloCreativo" target="18" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Aplicativo-Creativos-Software" options="-parameters" />
       <module name="DesarrolloCreativo" options="-parameters" />
     </option>
   </component>
