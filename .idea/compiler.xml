@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Aplicativo-Creativos-Software" target="18" />
+      <module name="Aplicativo-Creativos-Software" target="17" />
       <module name="DesarrolloCreativo" target="18" />
     </bytecodeTargetLevel>
   </component>
